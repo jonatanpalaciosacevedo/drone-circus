@@ -1,4 +1,4 @@
 # Drone Circus user interface
 
 
-To initialize code. Run circo.py
+To initialize the program, execute circo.py
