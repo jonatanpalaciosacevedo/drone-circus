@@ -9,8 +9,8 @@ from FollowClass import FollowDetector
 
 
 class Circo(Frame):
-    def __init__(self,parent=None):
-        Frame.__init__(self,parent)
+    def __init__(self, parent=None):
+        Frame.__init__(self, parent)
         self.parent = parent
         self.pack()
         self.make_widgets()
@@ -148,7 +148,8 @@ def enter():
     poseButton = Button(newWindow, text="Control Poses", height=1, bg='#367E18', fg='#FFE9A0', width=12, command=pose)
     poseButton.grid(row=0, column=1, padx=5, pady=5)
     poseButton['font'] = myFont
-    fingersButton = Button(newWindow, text="Control Dedos", height=1, bg='#367E18', fg='#FFE9A0', width=12, command=fingers)
+    fingersButton = Button(newWindow, text="Control Dedos", height=1, bg='#367E18', fg='#FFE9A0', width=12,
+                           command=fingers)
     fingersButton.grid(row=0, column=2, padx=5, pady=5)
     fingersButton['font'] = myFont
     facesButton = Button(newWindow, text="Control Caras", height=1, bg='#367E18', fg='#FFE9A0', width=12, command=faces)
@@ -163,7 +164,7 @@ def enter():
 
 enterButton = Button(root, text="Pasen y vean", height=1, bg='#367E18', fg='#FFE9A0', width=12, command=enter)
 enterButton['font'] = myFont
-enterButton_canvas = canvas1.create_window(770/2, 525/2+50, window=enterButton)
+enterButton_canvas = canvas1.create_window(770 / 2, 525 / 2 + 50, window=enterButton)
 
 # Execute tkinter
 root.mainloop()
