@@ -1,6 +1,5 @@
 import time
 from tkinter import *
-import customtkinter
 from pygame import mixer
 from tkinter import font
 from PIL import Image, ImageTk
