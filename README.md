@@ -1,5 +1,6 @@
 # Drone Circus user interface
 
+Python 3.9 Required
 
 To initialize the program, 
 1. Connect to Tello Wi-Fi
@@ -13,4 +14,3 @@ AttributeError: partially initialized module 'cv2' has no attribute 'gapi_wip_gs
 --> Delete all open-cv packages installed and then install the required version of open-cv again.
 
 It should be only ONE package of open-cv installed.
-
