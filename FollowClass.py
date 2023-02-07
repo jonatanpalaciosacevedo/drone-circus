@@ -335,9 +335,8 @@ class FollowDetector:
 
             image = self.speed_controller(frame)
 
-            # Save Video
-
-            self.out.write(image)
+            # Uncomment if you want to save the Video
+            # self.out.write(image)
             # Display the frame
             cv2.imshow('Tello', image)
 
@@ -378,7 +377,6 @@ class FollowDetector:
                 move_right = True
 
             # Arms un and elbow folded
-            # if 60 > left_arm_angle2 > 0 and left_arm_angle > 270 and 60 > right_arm_angle2 > 0 and right_arm_angle > 270 :
             if 110 > right_arm_angle2 > 80 and right_arm_angle < 50 and 110 > left_arm_angle2 > 80 and left_arm_angle < 50:
                 take_pic = True
 
