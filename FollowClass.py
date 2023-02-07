@@ -24,7 +24,7 @@ def put_text(frame, text, pos):
                 cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
 
 
-def findAngle(p1, p2, p3, lmList):
+def find_angle(p1, p2, p3, lmList):
     """
     Find the angle between 3 landmark points, given a list lmList with landmarks
     :param p1: point 1
@@ -47,7 +47,7 @@ def findAngle(p1, p2, p3, lmList):
     return angle
 
 
-def findDistance(x1, y1, x2, y2):
+def find_distance(x1, y1, x2, y2):
     dist = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     return dist
 
@@ -344,7 +344,6 @@ class FollowDetector:
 
             frame_skip = int((time.time() - start_time) / time_base)
 
-
     def check_pose(self, lmList):
         if len(lmList) != 0:
             # Check if we detect a pose in the body detected by Openpose
@@ -355,11 +354,11 @@ class FollowDetector:
             right_arm_angle2 = detector.findAngle(img, 24, 12, 14)  # Brazo derecho
             """
             # Arms controls roll
-            left_arm_angle = findAngle(11, 13, 21, lmList)
-            left_arm_angle2 = findAngle(13, 11, 23, lmList)
+            left_arm_angle = find_angle(11, 13, 21, lmList)
+            left_arm_angle2 = find_angle(13, 11, 23, lmList)
 
-            right_arm_angle = findAngle(22, 14, 12, lmList)
-            right_arm_angle2 = findAngle(24, 12, 14, lmList)
+            right_arm_angle = find_angle(22, 14, 12, lmList)
+            right_arm_angle2 = find_angle(24, 12, 14, lmList)
 
             move_left = False
             move_right = False
