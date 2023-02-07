@@ -70,9 +70,9 @@ class FollowDetector:
             os.makedirs(self.media_directory)
         self.date_fmt = '%Y-%m-%d_%H%M%S'
 
-        # save video from drone
-        self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-        self.out = cv2.VideoWriter('output.avi', self.fourcc, 10.0, (640, 480))
+        # save video from drone uncomment to save video
+        # self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        # self.out = cv2.VideoWriter('output.avi', self.fourcc, 10.0, (640, 480))
 
         # Detection values
         self.detector = pm.PoseDetector()
