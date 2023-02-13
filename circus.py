@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 from tkvideo import tkvideo
 from DetectorClass import DetectorClass
 from FollowClass import FollowDetector
+import BodyControlClass
 
 
 class Circo(Frame):
@@ -51,9 +52,11 @@ def follow():
     newWindow = Toplevel(root)
     newWindow.title("Sígueme")
     newWindow.geometry("450x650")
-    detector = FollowDetector()
-    frame = detector.buildFrame(newWindow)
-    frame.pack(fill="both", expand="yes", padx=10, pady=10)
+    # Presentation mode
+    BodyControlClass.main()
+    # detector = FollowDetector()
+    # frame = detector.buildFrame(newWindow)
+    # frame.pack(fill="both", expand="yes", padx=10, pady=10)
     newWindow.mainloop()
 
 
