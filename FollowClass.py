@@ -24,7 +24,7 @@ def put_text(frame, text, pos):
                 cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
 
 
-def findAngle(p1, p2, p3, lmList):
+def find_angle(p1, p2, p3, lmList):
     """
     Find the angle between 3 landmark points, given a list lmList with landmarks
     :param p1: point 1
@@ -47,7 +47,7 @@ def findAngle(p1, p2, p3, lmList):
     return angle
 
 
-def findDistance(x1, y1, x2, y2):
+def find_distance(x1, y1, x2, y2):
     dist = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     return dist
 
@@ -69,6 +69,10 @@ class FollowDetector:
         if not os.path.isdir(self.media_directory):
             os.makedirs(self.media_directory)
         self.date_fmt = '%Y-%m-%d_%H%M%S'
+
+        # save video from drone uncomment to save video
+        # self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        # self.out = cv2.VideoWriter('output.avi', self.fourcc, 10.0, (640, 480))
 
         # Detection values
         self.detector = pm.PoseDetector()
@@ -331,6 +335,8 @@ class FollowDetector:
 
             image = self.speed_controller(frame)
 
+            # Uncomment if you want to save the Video
+            # self.out.write(image)
             # Display the frame
             cv2.imshow('Tello', image)
 
@@ -347,9 +353,13 @@ class FollowDetector:
             left_arm_angle2 = detector.findAngle(img, 13, 11, 23)  # Brazo izquierdo
             right_arm_angle2 = detector.findAngle(img, 24, 12, 14)  # Brazo derecho
             """
-            # Left Arm angle controls roll
-            left_arm_angle = findAngle(11, 13, 21, lmList)
-            left_arm_angle2 = findAngle(13, 11, 23, lmList)
+            # Arms controls roll
+            left_arm_angle = find_angle(11, 13, 21, lmList)
+            left_arm_angle2 = find_angle(13, 11, 23, lmList)
+
+            right_arm_angle = find_angle(22, 14, 12, lmList)
+            right_arm_angle2 = find_angle(24, 12, 14, lmList)
+
             move_left = False
             move_right = False
             move_forward = False
@@ -357,41 +367,21 @@ class FollowDetector:
             take_pic = False
             land_drone = False
 
-            """if 110 > left_arm_angle2 > 80 and left_arm_angle < 60:
-                move_forward = True
-            if 110 > left_arm_angle2 > 80 and 180 > left_arm_angle > 100:
-                move_backward = True
-
-            # Right Arm angle controls pitch
-            right_arm_angle = findAngle(22, 14, 12, lmList)
-            right_arm_angle2 = findAngle(24, 12, 14, lmList)
-
-            if 110 > right_arm_angle2 > 80 and right_arm_angle < 60:
-                move_right = True
-            if 110 > right_arm_angle2 > 80 and 180 > right_arm_angle > 100:
-                move_left = True"""
-
-            if 110 > left_arm_angle2 > 80 and left_arm_angle < 60:
-                move_right = True
+            # Left arm up
             if 110 > left_arm_angle2 > 80 and 180 > left_arm_angle > 100:
                 move_left = True
 
-                # Right Arm angle controls pitch
-            right_arm_angle = findAngle(22, 14, 12, lmList)
-            right_arm_angle2 = findAngle(24, 12, 14, lmList)
-
-            if 110 > right_arm_angle2 > 80 and right_arm_angle < 60:
-                move_forward = True
+            # Right arm up
             if 110 > right_arm_angle2 > 80 and 180 > right_arm_angle > 100:
-                move_backward = True
+                move_right = True
 
-            ###########################
-            if 60 > left_arm_angle2 > 0 and left_arm_angle > 270 and 60 > right_arm_angle2 > 0 and right_arm_angle > 270 :
+            # Arms un and elbow folded
+            if 110 > right_arm_angle2 > 80 and right_arm_angle < 50 and 110 > left_arm_angle2 > 80 and left_arm_angle < 50:
                 take_pic = True
 
+            # Wrists cross over head
             if left_arm_angle2 > 135 and 180 > left_arm_angle > 100 and right_arm_angle2 > 135 and 180 > right_arm_angle > 100:
                 land_drone = True
-            ###########################
 
             if move_left:
                 return "MOVING_LEFT"
@@ -449,11 +439,11 @@ class FollowDetector:
                         elif self.pose == "MOVING_LEFT":
                             self.axis_speed["roll"] = self.def_speed["roll"]
 
-                        elif self.pose == "MOVING_FORWARD":
-                            self.axis_speed["pitch"] = self.def_speed["pitch"]
+                        # elif self.pose == "MOVING_FORWARD":
+                        #     self.axis_speed["pitch"] = self.def_speed["pitch"]
 
-                        elif self.pose == "MOVING_BACKWARD":
-                            self.axis_speed["pitch"] = -self.def_speed["pitch"]
+                        # elif self.pose == "MOVING_BACKWARD":
+                        #     self.axis_speed["pitch"] = -self.def_speed["pitch"]
 
                         elif self.pose == "TAKING_PICTURE":
                             # Take a picture in 1 second
@@ -616,12 +606,13 @@ class FollowDetector:
             self.drone.land()
             self.flying = False
 
-        self.at_home = True
+        self.out.release()
         # this will stop the video stream thread
         self.state = 'closed'
-        self.drone.sock.close()
         self.drone.quit()
+        self.drone.sock.close()
         self.cap.release()
+        self.at_home = True
         self.fatherFrame.destroy()
         cv2.destroyAllWindows()
         cv2.waitKey(1)
