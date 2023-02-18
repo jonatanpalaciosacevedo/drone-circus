@@ -53,10 +53,10 @@ def follow():
     newWindow.title("Sígueme")
     newWindow.geometry("450x650")
     # Presentation mode
-    BodyControlClass.main()
-    # detector = FollowDetector()
-    # frame = detector.buildFrame(newWindow)
-    # frame.pack(fill="both", expand="yes", padx=10, pady=10)
+    # BodyControlClass.main()
+    detector = FollowDetector()
+    frame = detector.buildFrame(newWindow)
+    frame.pack(fill="both", expand="yes", padx=10, pady=10)
     newWindow.mainloop()
 
 
